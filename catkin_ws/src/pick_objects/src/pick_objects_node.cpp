@@ -22,12 +22,12 @@ int main(int argc, char **argv)
     move_base_msgs::MoveBaseGoal goal;
 
     // set up the frame parameters
-    goal.target_pose.header.frame_id = "/map";
+    goal.target_pose.header.frame_id = "/odom";
     goal.target_pose.header.stamp = ros::Time::now();
 
     // Define a position and orientation for the robot to reach
-    goal.target_pose.pose.position.x = -1.21;
-    goal.target_pose.pose.position.y = 1.95;
+    goal.target_pose.pose.position.x = 7.3;
+    goal.target_pose.pose.position.y = 2.6;
     goal.target_pose.pose.orientation.w = 1.0;
 
     // Send the goal position and orientation for the robot to reach
@@ -44,8 +44,8 @@ int main(int argc, char **argv)
         ROS_INFO("Sleeping 5 sec");
         ros::Duration(5.0).sleep();
         goal.target_pose.header.stamp = ros::Time::now();
-        goal.target_pose.pose.position.x = -2.41;
-        goal.target_pose.pose.position.y = -8.94;
+        goal.target_pose.pose.position.x = 4.5;
+        goal.target_pose.pose.position.y = 0;
         goal.target_pose.pose.orientation.w = 0.5;
 
         ROS_INFO("Sending SECOND goal");
@@ -53,7 +53,21 @@ int main(int argc, char **argv)
         ac.waitForResult();
         if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
         {
-            ROS_INFO("Reached Drop Zone");
+            ROS_INFO("Reached Drop Zone -- GOING HOME");
+            ros::Duration(5.0).sleep();
+            goal.target_pose.header.stamp = ros::Time::now();
+            goal.target_pose.pose.position.x = 0.0;
+            goal.target_pose.pose.position.y = 0;
+            goal.target_pose.pose.orientation.w = 0.01;
+
+            // ROS_INFO("Sending SECOND goal");
+            ac.sendGoal(goal);
+            ac.waitForResult();
+
+            if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+                {
+                ROS_INFO("MISSION ACCOMPLISHED");
+                }
         }
         else
         {
