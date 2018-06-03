@@ -5,17 +5,17 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "basic_shapes");
     ros::NodeHandle n;
-    ros::Rate r(1);
+    ros::Rate r(20);
     ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
 
     // Set our initial shape type to be a cube
-    uint32_t shape = visualization_msgs::Marker::CUBE;
+    uint32_t shape = visualization_msgs::Marker::MESH_RESOURCE;
 
     while (ros::ok())
     {
         visualization_msgs::Marker marker;
         // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-        marker.header.frame_id = "/map";
+        marker.header.frame_id = "/plate_top_link";
         marker.header.stamp = ros::Time::now();
 
         // Set the namespace and id for this marker.  This serves to create a unique ID
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 
         // Set the marker type.  Initially this is CUBE, and cycles between that and SPHERE, ARROW, and CYLINDER
         marker.type = shape;
-
+        marker.mesh_resource = "package://add_markers/meshes/bottle.stl";
         // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
         marker.action = visualization_msgs::Marker::ADD;
 
@@ -39,9 +39,9 @@ int main(int argc, char **argv)
         marker.pose.orientation.w = 1.0;
 
         // Set the scale of the marker -- 1x1x1 here means 1m on a side
-        marker.scale.x = 1.0;
-        marker.scale.y = 1.0;
-        marker.scale.z = 1.0;
+        marker.scale.x = 0.1;
+        marker.scale.y = 0.1;
+        marker.scale.z = 0.1;
 
         // Set the color -- be sure to set alpha to something non-zero!
         marker.color.r = 0.0f;
@@ -64,21 +64,21 @@ int main(int argc, char **argv)
         marker_pub.publish(marker);
 
         // Cycle between different shapes
-        switch (shape)
-        {
-        case visualization_msgs::Marker::CUBE:
-            shape = visualization_msgs::Marker::SPHERE;
-            break;
-        case visualization_msgs::Marker::SPHERE:
-            shape = visualization_msgs::Marker::ARROW;
-            break;
-        case visualization_msgs::Marker::ARROW:
-            shape = visualization_msgs::Marker::CYLINDER;
-            break;
-        case visualization_msgs::Marker::CYLINDER:
-            shape = visualization_msgs::Marker::CUBE;
-            break;
-        }
+        // switch (shape)
+        // {
+        // case visualization_msgs::Marker::CUBE:
+        //     shape = visualization_msgs::Marker::SPHERE;
+        //     break;
+        // case visualization_msgs::Marker::SPHERE:
+        //     shape = visualization_msgs::Marker::ARROW;
+        //     break;
+        // case visualization_msgs::Marker::ARROW:
+        //     shape = visualization_msgs::Marker::CYLINDER;
+        //     break;
+        // case visualization_msgs::Marker::CYLINDER:
+        //     shape = visualization_msgs::Marker::CUBE;
+        //     break;
+        // }
 
         r.sleep();
     }
