@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SOURCE_CMD="source ~/Documents/RoboND/Project5/RoboND-HomeServiceRobot/catkin_ws/devel/setup.bash"
+SOURCE_CMD="source ../../devel/setup.bash"
 
 
 terminator -e "$SOURCE_CMD; roslaunch turtlebot_gazebo turtlebot_world.launch " & sleep 5
