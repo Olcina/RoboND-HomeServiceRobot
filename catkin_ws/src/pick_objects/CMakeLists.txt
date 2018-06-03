@@ -104,7 +104,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES pick_objects
+  LIBRARIES pick_objects
 #  CATKIN_DEPENDS actionlib move_base_msgs roscpp
 #  DEPENDS system_lib
 )
